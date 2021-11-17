@@ -20,6 +20,8 @@ namespace Seb.Modules
 			var value = DataHandler.GetRawValue(Context.Guild.Id, splitValue);
 			if (value != null)
 			{
+				// await Context.Message.DeleteAsync();
+				await Context.Message.AddReactionAsync(new Emoji("🍑"));
 				await ReplyAsync(value.Url);
 				return;
 			}
@@ -50,7 +52,7 @@ namespace Seb.Modules
 				.WithFooter(footer)
 				.WithCurrentTimestamp();
 
-			for (int i = 0; i < readText.Length / 2; i += 2)
+			for (int i = 0; i < readText.Length; i += 2)
 			{
 				var title = readText[i];
 				var content = readText[i + 1];

@@ -25,6 +25,10 @@ namespace Seb.Misc
 					toCheckSet.Add(guildDic[tag]);
 				}
 			}
+			if (toCheckSet.Count == 0)
+			{
+				return null;
+			}
 			IEnumerable<Guid> ids = toCheckSet[0];
 			for (int i = 1; i < toCheckSet.Count; i++)
 			{
