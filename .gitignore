@@ -1,0 +1,6 @@
+bin/
+.vscode/
+obj/
+Test/
+_config.yml
+token.json

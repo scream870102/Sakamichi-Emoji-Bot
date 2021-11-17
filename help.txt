@@ -1,0 +1,8 @@
+Show content
+~[show|s] [tag1]|[tag2]...|[tagN]
+Add new content
+~[add|a] [tag1]|[tag2]|[tag3]....[tagN]|[content]
+List all contents in this guild
+~[list|l]
+Manual
+~[help|h]
