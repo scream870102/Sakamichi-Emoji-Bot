@@ -9,23 +9,21 @@ namespace Seb.Modules
 	{
 		[Command("Show"), Alias("s")]
 		[Summary("Show content")]
-		public Task ShowTask([Remainder] string data)
+		public Task ShowTask(string[] tags)
 		{
-			return ShowTaskAsync(data);
+			return ShowTaskAsync(tags);
 		}
 
-		public async Task ShowTaskAsync([Remainder] string tag)
+		public async Task ShowTaskAsync(string[] tags)
 		{
-			var splitValue = tag.Split('|');
-			var value = DataHandler.GetRawValue(Context.Guild.Id, splitValue);
+			var value = DataHandler.GetRawValue(Context.Guild.Id, tags);
 			if (value != null)
 			{
-				// await Context.Message.DeleteAsync();
 				await Context.Message.AddReactionAsync(new Emoji("🍑"));
 				await ReplyAsync(value.Url);
 				return;
 			}
-			await ReplyAsync("This is not a valid context");
+			await ReplyAsync("These tags are invalid");
 		}
 
 

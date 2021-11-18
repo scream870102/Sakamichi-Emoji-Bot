@@ -29,16 +29,16 @@ namespace Seb.Sheet
 
 		public static bool TryAdd(SheetRawValue value, ulong guild)
 		{
-			var title = guild.ToString();
-			if (!IsSheetContains(title))
+			var sheetTitle = guild.ToString();
+			if (!IsSheetContains(sheetTitle))
 			{
-				if (!TryAddNewSheet(title))
+				if (!TryAddNewSheet(sheetTitle))
 				{
 					return false;
 				}
 			}
 
-			var context = new ValueRange();
+			var content = new ValueRange();
 			IList<IList<object>> list = new List<IList<object>>();
 			list.Add(new List<object>());
 			var current = list[0];
@@ -49,8 +49,8 @@ namespace Seb.Sheet
 			{
 				current.Add(tag);
 			}
-			context.Values = list;
-			var setRequest = service.Spreadsheets.Values.Append(context, spreadsheetId, GetRange(title));
+			content.Values = list;
+			var setRequest = service.Spreadsheets.Values.Append(content, spreadsheetId, GetRange(sheetTitle));
 			setRequest.ValueInputOption = SpreadsheetsResource.ValuesResource.AppendRequest.ValueInputOptionEnum.RAW;
 
 			var resp = setRequest.Execute();
@@ -60,6 +60,17 @@ namespace Seb.Sheet
 			}
 			return resp != null;
 		}
+
+		// //TODO:
+		// public static bool TryUpdateExistContent(Guid id, string[] tags, ulong guild)
+		// {
+		// 	if (DataHandler.TryUpdateValue(id, tags, guild))
+		// 	{
+
+		// 	}
+
+		// 	return false;
+		// }
 
 		public static void UpdateAllValueFromRemote()
 		{

@@ -9,12 +9,12 @@ namespace Seb.Misc
 		//		Key: tag
 		//			Key: id
 		private static Dictionary<ulong, Dictionary<string, HashSet<Guid>>> dic;
-
-		public static SheetRawValue GetRawValue(ulong guild, params string[] tags)
+		public static List<SheetRawValue> GetRawValues(ulong guild, params string[] tags)
 		{
+			var result = new List<SheetRawValue>();
 			if (!dic.ContainsKey(guild))
 			{
-				return null;
+				return result;
 			}
 			var guildDic = dic[guild];
 			var toCheckSet = new List<HashSet<Guid>>();
@@ -27,7 +27,7 @@ namespace Seb.Misc
 			}
 			if (toCheckSet.Count == 0)
 			{
-				return null;
+				return result;
 			}
 			IEnumerable<Guid> ids = toCheckSet[0];
 			for (int i = 1; i < toCheckSet.Count; i++)
@@ -36,11 +36,26 @@ namespace Seb.Misc
 			}
 			if (!ids.Any())
 			{
+				return result;
+			}
+			foreach (var id in ids)
+			{
+				if (raw[guild].ContainsKey(id))
+				{
+					result.Add(raw[guild][id]);
+				}
+			}
+			return result;
+		}
+
+		public static SheetRawValue GetRawValue(ulong guild, params string[] tags)
+		{
+			var values = GetRawValues(guild, tags);
+			if (values.Count == 0)
+			{
 				return null;
 			}
-			var id = ids.ElementAt(random.Next(ids.Count()));
-			var result = raw[guild][id] ?? null;
-			return result;
+			return values.ElementAt(random.Next(values.Count));
 		}
 
 		public static List<SheetRawValue> GetRawValuesByGuild(ulong guild)
@@ -48,7 +63,7 @@ namespace Seb.Misc
 			var result = new Dictionary<Guid, SheetRawValue>();
 			if (!dic.ContainsKey(guild))
 			{
-				return null;
+				return result.Values.ToList();
 			}
 			foreach (var tagPair in dic[guild])
 			{
@@ -61,6 +76,40 @@ namespace Seb.Misc
 				}
 			}
 			return result.Values.ToList();
+		}
+
+		public static List<SheetRawValue> GetRawValuesByAuthor(ulong id, ulong guild)
+		{
+			var result = new List<SheetRawValue>();
+			if (!raw.ContainsKey(guild))
+			{
+				return result;
+			}
+			foreach (var valuePair in raw[guild])
+			{
+				if (valuePair.Value.Author == id)
+				{
+					result.Add(valuePair.Value);
+				}
+			}
+			return result;
+		}
+
+		public static List<SheetRawValue> GetRawValuesByContent(string content, ulong guild)
+		{
+			var result = new List<SheetRawValue>();
+			if (!raw.ContainsKey(guild))
+			{
+				return result;
+			}
+			foreach (var valuePair in raw[guild])
+			{
+				if (valuePair.Value.Url == content)
+				{
+					result.Add(valuePair.Value);
+				}
+			}
+			return result;
 		}
 
 		public static void Init()
@@ -109,6 +158,39 @@ namespace Seb.Misc
 				raw[guild].Add(content.Id, content);
 			}
 		}
+
+		// public static bool TryUpdateValue(Guid id, string[] tags, ulong guild)
+		// {
+		// 	if (raw[guild].ContainsKey(id))
+		// 	{
+		// 		var oldValue = raw[guild][id];
+		// 		var oldTags = oldValue.Tags;
+		// 		raw[guild].Remove(id);
+		// 		var newTags = oldTags.Intersect(tags).ToArray();
+		// 		var newValue = new SheetRawValue(id.ToString(), oldValue.Author.ToString(), oldValue.Url, newTags);
+		// 		raw[guild].Add(id, newValue);
+		// 		UpdateDic(newValue, guild);
+		// 		return true;
+		// 	}
+		// 	return false;
+		// }
+
+		// private static void UpdateDic(SheetRawValue content, ulong guild)
+		// {
+		// 	foreach (var tag in content.Tags)
+		// 	{
+		// 		var guildDic = dic[guild];
+		// 		if (!guildDic.ContainsKey(tag))
+		// 		{
+		// 			guildDic.Add(tag, new HashSet<Guid>());
+		// 		}
+		// 		var contentDic = dic[guild][tag];
+		// 		if (!contentDic.Contains(content.Id))
+		// 		{
+		// 			contentDic.Add(content.Id);
+		// 		}
+		// 	}
+		// }
 
 		private static void InitDic()
 		{

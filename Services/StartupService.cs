@@ -28,13 +28,14 @@ namespace Seb.Services
 
 		public async Task StartAsync()
 		{
-			string discordToken = config["tokens:discord"]; 
+			string discordToken = config["tokens:discord"];
 			if (string.IsNullOrWhiteSpace(discordToken))
 				throw new Exception("Please enter your bot's token into the `_configuration.json` file found in the applications root directory.");
 			await discord.SetActivityAsync(new DefaultActivity());
-			await discord.LoginAsync(TokenType.Bot, discordToken);    
-			await discord.StartAsync();                               
-			await commands.AddModulesAsync(Assembly.GetEntryAssembly(), provider);   
+			await discord.LoginAsync(TokenType.Bot, discordToken);
+			await discord.StartAsync();
+			commands.AddTypeReader<string[]>(new TagTypeReader());
+			await commands.AddModulesAsync(Assembly.GetEntryAssembly(), provider);
 		}
 	}
 }
