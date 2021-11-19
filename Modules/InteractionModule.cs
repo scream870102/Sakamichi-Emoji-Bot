@@ -9,9 +9,10 @@ namespace Seb.Modules
 	{
 		[Command("Show"), Alias("s")]
 		[Summary("Show content")]
-		public Task ShowTask(string[] tags)
+		public Task ShowTask([Remainder] string tags)
 		{
-			return ShowTaskAsync(tags);
+			var tag = TagParser.ParseTag(tags);
+			return ShowTaskAsync(tag);
 		}
 
 		public async Task ShowTaskAsync(string[] tags)
@@ -25,7 +26,6 @@ namespace Seb.Modules
 			}
 			await ReplyAsync("These tags are invalid");
 		}
-
 
 		[Command("Help"), Alias("h")]
 		[Summary("Show help info")]

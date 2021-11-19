@@ -79,6 +79,21 @@ namespace Seb.Sheet
 			var getSpreadSheetReq = service.Spreadsheets.Get(spreadsheetId);
 			sheetTitlesCache.Clear();
 			spreadSheet = getSpreadSheetReq.Execute();
+			UpdateLocalCache();
+		}
+
+		public static async Task UpdateAllValueFromRemoteAsync()
+		{
+			RawValues = new Dictionary<ulong, List<SheetRawValue>>();
+
+			var getSpreadSheetReq = service.Spreadsheets.Get(spreadsheetId);
+			sheetTitlesCache.Clear();
+			spreadSheet = await getSpreadSheetReq.ExecuteAsync();
+			UpdateLocalCache();
+		}
+
+		private static void UpdateLocalCache()
+		{
 			foreach (var sheet in spreadSheet.Sheets)
 			{
 				var title = sheet.Properties.Title;

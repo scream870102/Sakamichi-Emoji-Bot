@@ -37,16 +37,18 @@ tokens:
 
 - `help|h`
   - Show help message
-  - `~help`
-- `add|a` [ TAG1 | TAG2 | ... ] | CONTENT
+    - `~help`
+- `add|a` [TAG1 TAG2 ... TAGN ]  CONTENT
   - Add new content
-  - Split with `|`
-  - `~add Oozono|Momoko|Kawaii`
+    - `~add Oozono Momoko Kawaii`
 - `list|l`
   - Show content added in this server
-  - `~list`
-- `show|s` [TAG1 | TAG2...]
+  - `~list` [TAG1 TAG2 ... TAGN ]
+  - `~list` Author: [@User] Tags: [TAG1 TAG2 ... TAGN ]
+    - `~list oozono momoko`
+    - `~list Author: @scream870102 Tags: oozono momoko`
+    - `~list Author: @scream870102`
+- `show|s` [TAG1 TAG2 ... TAGN ]
   - Show the content filtered by TAGS in the database
   - At least one `TAG` should be provided
-  - Split with `|`
-  - `~show Oozono|Momoko`
+    - `~show Oozono Momoko`

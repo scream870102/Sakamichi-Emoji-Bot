@@ -34,7 +34,6 @@ namespace Seb.Services
 			await discord.SetActivityAsync(new DefaultActivity());
 			await discord.LoginAsync(TokenType.Bot, discordToken);
 			await discord.StartAsync();
-			commands.AddTypeReader<string[]>(new TagTypeReader());
 			await commands.AddModulesAsync(Assembly.GetEntryAssembly(), provider);
 		}
 	}

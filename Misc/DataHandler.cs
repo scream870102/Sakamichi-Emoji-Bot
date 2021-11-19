@@ -24,6 +24,10 @@ namespace Seb.Misc
 				{
 					toCheckSet.Add(guildDic[tag]);
 				}
+				else
+				{
+					toCheckSet.Add(new HashSet<Guid>());
+				}
 			}
 			if (toCheckSet.Count == 0)
 			{
@@ -159,6 +163,19 @@ namespace Seb.Misc
 			}
 		}
 
+		private static void InitDic()
+		{
+			dic = new Dictionary<ulong, Dictionary<string, HashSet<Guid>>>();
+			foreach (var data in raw)
+			{
+				foreach (var content in data.Value)
+				{
+					AddValue(content.Value, data.Key);
+				}
+			}
+		}
+
+		//TODO: Add Tag and Try to update the cache
 		// public static bool TryUpdateValue(Guid id, string[] tags, ulong guild)
 		// {
 		// 	if (raw[guild].ContainsKey(id))
@@ -192,16 +209,5 @@ namespace Seb.Misc
 		// 	}
 		// }
 
-		private static void InitDic()
-		{
-			dic = new Dictionary<ulong, Dictionary<string, HashSet<Guid>>>();
-			foreach (var data in raw)
-			{
-				foreach (var content in data.Value)
-				{
-					AddValue(content.Value, data.Key);
-				}
-			}
-		}
 	}
 }

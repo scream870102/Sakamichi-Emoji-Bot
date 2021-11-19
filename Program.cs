@@ -1,11 +1,4 @@
-﻿using Discord;
-using System;
-using System.Threading.Tasks;
-using System.IO;
-using Discord.WebSocket;
-using Discord.Commands;
-
-namespace Seb
+﻿namespace Seb
 {
 	class Program
 	{
