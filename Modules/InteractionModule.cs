@@ -39,22 +39,34 @@ namespace Seb.Modules
 			string path = @"help.txt";
 			var readText = File.ReadAllLines(path);
 
-			var footer = new EmbedFooterBuilder()
-			.WithIconUrl(@"https://i.imgur.com/oC0Yo5s.png")
-			.WithText($"Created by scream870102");
-			var builder = new EmbedBuilder()
-				.WithDescription($"Hey {MentionUtils.MentionUser(Context.User.Id)}!!!\nHere is the manual for this BOT")
-				.WithColor(new Color(240, 93, 154))
-				.WithTitle("Tutorial")
-				.WithImageUrl(@"https://i.imgur.com/Mw51xtx.jpg")
-				.WithFooter(footer)
-				.WithCurrentTimestamp();
 
-			for (int i = 0; i < readText.Length; i += 2)
+			var builder = EmbedCreator.CreateBasicEmbedBuilder("Manual");
+			builder.WithDescription($"Hey {MentionUtils.MentionUser(Context.User.Id)}!!!\nHere is the manual for this BOT");
+			builder.WithImageUrl(@"https://i.imgur.com/Mw51xtx.jpg");
+
+			var title = "";
+			var content = "";
+			var isTitleFind = false;
+			for (int i = 0; i < readText.Length; i++)
 			{
-				var title = readText[i];
-				var content = readText[i + 1];
-				builder.AddField(title, content);
+				if (!readText[i].StartsWith('~'))
+				{
+					if (!isTitleFind)
+					{
+						title = readText[i];
+						isTitleFind = true;
+					}
+					else
+					{
+						builder.AddField(title, content);
+						title = readText[i];
+						content = "";
+					}
+				}
+				else
+				{
+					content += $"{readText[i]}\n";
+				}
 			}
 			var embed = builder.Build();
 			await ReplyAsync(null, false, embed);

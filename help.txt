@@ -1,9 +1,9 @@
 Show content
-~[show|s] [tag1] [tag2]...[tagN]
+~[show|s] [tag1]...[tagN]
 Add new content
-~[add|a] [tag1] [tag2] [tag3]....[tagN] [content]
+~[add|a] [tag1] ...[tagN] [content]
 List all contents in this guild
-~[list|l] [tag1] [tag2] .... [tagN]
-~[list|l] [Author:@User] [Tags:tag1 tag2 ....tagN]
+~[list|l] [tag1] ... [tagN]
+~[list|l] [Author:@User] [Tags:tag1...tagN]
 Manual
 ~[help|h]
